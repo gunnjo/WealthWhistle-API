@@ -14,6 +14,7 @@ app.configure(function() {
 });
 
 app.post('/users', api.account.post);
+app.put('/users/:username', api.account.put);
 
 app.listen(config.app.port);
 console.log("application listening on port: " + config.app.port);
