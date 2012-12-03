@@ -6,7 +6,6 @@ var crypto = require('crypto');
 exports.post = function(req, res) {
 	var hashedPassword = bcrypt.hashSync(req.body.password, config.app.salt);
 	var activationKey = crypto.randomBytes(32).toString('hex');
-	console.log(activationKey);
 
 	var accountData = {};
 	var data = req.body;
