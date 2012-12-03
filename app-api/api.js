@@ -1,0 +1,1 @@
+exports.account = require('./controllers/account.js');
