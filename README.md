@@ -33,3 +33,5 @@ Code Style:
 Use http://nodeguide.com/style.html with the following exceptions:
 
 * Tabs should be used instead of spaces.
+
+* Maximum line length of 90 characters
