@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var accountSchema = new Schema({
 	activationKey: {type: String, required: true},
+	apiKey: {type: String, required: true},
 	birthDate: {type: Date, required: false},
 	creationDate: {type: Date, default: Date.now()},
 	email: {type: String, required: true},

@@ -10,6 +10,7 @@ exports.post = function(req, res) {
 
 	var hashedPassword = bcrypt.hashSync(data.password, config.app.salt);
 	var activationKey = crypto.randomBytes(32).toString('hex');
+	var apiKey = crypto.randomBytes(32).toString('hex');
 
 	if (data.birthDate != undefined) { accountData.birthDate = data.birthDate; }
 	if (data.email != undefined) { accountData.email = data.email; }
@@ -24,6 +25,7 @@ exports.post = function(req, res) {
 	accountData.email = data.email;
 	accountData.firstName = data.firstName;
 	accountData.lastName = data.lastName;
+	accountData.apiKey = apiKey;
 
 	account.insertAccount(accountData, res);
 }
