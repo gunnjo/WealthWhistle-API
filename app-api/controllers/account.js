@@ -4,9 +4,9 @@ var config = require('../config.js');
 var crypto = require('crypto');
 
 //TODO: better input validation
-exports.post = function(req, res) {
+exports.post = function(request, response) {
 	var accountData = {};
-	var data = req.body;
+	var data = request.body;
 
 	var hashedPassword = bcrypt.hashSync(data.password, config.app.salt);
 	var activationKey = crypto.randomBytes(32).toString('hex');
@@ -27,24 +27,23 @@ exports.post = function(req, res) {
 	accountData.lastName = data.lastName;
 	accountData.apiKey = apiKey;
 
-	account.insertAccount(accountData, res);
+	account.insertAccount(accountData, response);
 }
 
-exports.put = function(req, res) {
+exports.put = function(request, response) {
 	var accountData = {};
 	var conditions = {};
-	var data = req.body;
+	var data = request.body;
 
 	if (data.password != undefined) {
 		var hashedPassword = bcrypt.hashSync(data.password, config.app.salt);
 		accountData.password = hashedPassword;
 	}
-
 	if (data.email != undefined) { accountData.email = data.email; }
 	var validZip = data.zip != undefined && data.zip.length == 5 && data.zip.match('/^[0-9]{5}$/');
 	if (validZip) { accountData.zip = data.zip; }
 
-	conditions.username = req.params.username;
+	conditions.userId = request.params.userId;
 
-	account.updateAccount(accountData, res);
+	account.updateAccount(accountData, response);
 }
