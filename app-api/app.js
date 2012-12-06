@@ -15,9 +15,12 @@ app.configure(function() {
 	app.use(app.router);
 });
 
+app.delete('/buckets/:bucketId', buckets.delete)
+
 app.post('/users', accounts.post);
-app.put('/users/:username', accounts.put);
 app.post('/buckets', buckets.post);
 
+app.put('/users/:username', accounts.put);
+
 app.listen(config.app.port);
-console.log("application listening on port: " + config.app.port);
+console.log('application listening on port: ' + config.app.port);
