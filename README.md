@@ -15,10 +15,14 @@ First, set up the environment.
 
 5. Install the Mongoose module (npm install mongoose)
 
-6. Install node.bcrypt (https://github.com/ncb000gt/node.bcrypt.js/)
+6. Install the Bcrypt module (https://github.com/ncb000gt/node.bcrypt.js/)
     a. npm install node-gyp followed by npm install bcrypt should work if you're on Linux and have g++ installed
 
-6. Create a local config file from the provided default config file (should be config.js)
+7. Install the Expresso module (npm install expresso)
+
+8. Install the Nodemock module (npm install nodemock)
+
+9. Create a local config file from the provided default config file (should be config.js)
 
 Next, start the server.
 
