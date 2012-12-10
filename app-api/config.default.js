@@ -1,16 +1,35 @@
-var config = {}
+EnvironmentEnum = {
+	DEV : 'development',
+	PROD : 'production'
+};
 
-config.mongo = {}
-config.app = {}
+var environment = EnvironmentEnum.DEV;
 
-config.app.salt = '';
-config.app.port = 3000;
+var prod = {};
+var dev = {};
 
-config.mongo.dbName = '';
-config.mongo.host = '';
-config.mongo.password = '';
-config.mongo.port = 27017;
-config.mongo.username = '';
+prod.app.salt = '';
+prod.app.port = 3000;
+
+prod.mongo.dbName = '';
+prod.mongo.host = '';
+prod.mongo.password = '';
+prod.mongo.port = 27017;
+prod.mongo.username = '';
+
+dev.app.salt = '';
+dev.app.port = 3000;
+
+dev.mongo.dbName = '';
+dev.mongo.host = '';
+dev.mongo.password = '';
+dev.mongo.port = 27017;
+dev.mongo.username = '';
+
+var config = {};
+
+config.mongo = (environment == EnvironmentEnum.DEV) ? dev.mongo : prod.mongo;
+config.app = (environment == EnvironmentEnum.DEV) ? dev.app : prod.app;
 
 config.mongo.getConnectString = function() {
 	var connectString = 'mongodb://';
