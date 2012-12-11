@@ -62,12 +62,12 @@ exports.updateAccount = function(apiKey, accountData, response) {
 exports.verifyUser = function(action, apiKey, response, userId) {
 	this.AccountModel.findById(userId, 'apiKey', function(err, account) {
 		if(err) {
-			console.log(err);
+			console.log('error verifying user - ' + userId);
 			response.send(constants.HTTP_BADREQUEST);
 			return;
 		}
 		if(account.apiKey != apiKey) {
-			console.log(err);
+			console.log('incorrect api key - ' + userId);
 			response.send(constants.HTTP_UNAUTHORIZED);
 			return;
 		}
