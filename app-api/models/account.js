@@ -16,7 +16,8 @@ var accountSchema = new Schema({
 	zip: {type: String, required: false}
 });
 
-exports.AccountModel = mongoose.model('account', accountSchema);
+AccountModel = mongoose.model('account', accountSchema);
+exports.AccountModel = AccountModel;
 
 exports.insertAccount = function(accountData, response) {
 	new this.AccountModel(accountData).save(function(err, newAccount) {
@@ -30,22 +31,24 @@ exports.insertAccount = function(accountData, response) {
 	});
 };
 
-
-exports.updateAccount = function(accountData, response) {
-
-	this.AccountModel.findByIdAndUpdate(accountData.userId, accountData, function(err, numberAffected, rawResponse) {
-		if (err) {
-			console.log(err);
-			response.send(constants.HTTP_BADREQUEST);
-			return;
-		}
-		if (numberAffected === 0) {
-			console.log('did not update any rows for username ' + req.params.username);
-			response.send(constants.HTTP_BADREQUEST);
-			return;
-		}
-		res.send(constants.HTTP_OK);
-	})
+exports.updateAccount = function(apiKey, accountData, response) {
+	var updateAccount = function() {
+		AccountModel.findByIdAndUpdate(accountData.userId, accountData,
+				function(err, numberAffected) {
+					if (err) {
+						console.log(err);
+						response.send(constants.HTTP_BADREQUEST);
+						return;
+					}
+					if (numberAffected === 0) {
+						console.log('did not update any rows for userId ' + accountData.userId);
+						response.send(constants.HTTP_BADREQUEST);
+						return;
+					}
+					response.send(constants.HTTP_OK);
+				})
+	}
+	this.verifyUser(updateAccount, apiKey, response, accountData.userId);
 }
 
 /**
@@ -57,9 +60,7 @@ exports.updateAccount = function(accountData, response) {
  * @param userId - A string holding the user id of the user that is authenticating.
  */
 exports.verifyUser = function(action, apiKey, response, userId) {
-	console.log(apiKey + " ::: " + userId);
-	AccountModel.findById(userId, 'apiKey', function(err, account) {
-		console.log(account);
+	this.AccountModel.findById(userId, 'apiKey', function(err, account) {
 		if(err) {
 			console.log(err);
 			response.send(constants.HTTP_BADREQUEST);

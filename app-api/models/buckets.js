@@ -19,7 +19,7 @@ var BucketModel = mongoose.model('bucket', bucketSchema);
  * @param bucketData - An array containing an apiKey as well as a bucket id to delete.
  * @param response - An express response object
  */
-exports.deleteBucket = function(bucketData, response) {
+exports.deleteBucket = function(apiKey, bucketData, response) {
 	var deleteBucket = function() {
 		BucketModel.findByIdAndRemove(bucketData.bucketId, function(err, bucket) {
 			if(err) {
@@ -30,7 +30,7 @@ exports.deleteBucket = function(bucketData, response) {
 			response.send(constants.HTTP_OK, bucket);
 		});
 	};
-	account.verifyUser(deleteBucket, bucketData.apiKey, response, bucketData.userId);
+	account.verifyUser(deleteBucket, apiKey, response, bucketData.userId);
 }
 
 /**
@@ -40,7 +40,7 @@ exports.deleteBucket = function(bucketData, response) {
  * @param response - An express response object.
  */
 
-exports.insertBucket = function(bucketData, response) {
+exports.insertBucket = function(apiKey, bucketData, response) {
 	var insertBucket = function() {
 		new BucketModel(bucketData).save(function(err, newBucket) {
 			console.log("new bucket - " +  newBucket);
@@ -52,5 +52,5 @@ exports.insertBucket = function(bucketData, response) {
 			response.send(constants.HTTP_CREATED, newBucket);
 		});
 	}
-	account.verifyUser(insertBucket, bucketData.apiKey, response, bucketData.userId);
+	account.verifyUser(insertBucket, apiKey, response, bucketData.userId);
 }

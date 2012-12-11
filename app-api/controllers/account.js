@@ -14,10 +14,11 @@ exports.post = function(request, response) {
 
 	if (data.birthDate != undefined) { accountData.birthDate = data.birthDate; }
 	if (data.email != undefined) { accountData.email = data.email; }
-	if (data.gender != undefined && data.zip.gender.length == 1) {
+	if (data.gender != undefined && data.gender.length == 1) {
 		accountData.gender = data.gender;
 	}
-	var validZip = data.zip != undefined && data.zip.length == 5 && data.zip.match('/^[0-9]{5}$/');
+	var validZip = (data.zip != undefined) && (data.zip.length == 5)
+			&& (data.zip.match(/^[0-9]{5}$/) != null);
 	if (validZip) { accountData.zip = data.zip; }
 	accountData.username = data.username;
 	accountData.password = hashedPassword;
@@ -26,13 +27,11 @@ exports.post = function(request, response) {
 	accountData.firstName = data.firstName;
 	accountData.lastName = data.lastName;
 	accountData.apiKey = apiKey;
-
 	account.insertAccount(accountData, response);
 }
 
 exports.put = function(request, response) {
 	var accountData = {};
-	var conditions = {};
 	var data = request.body;
 
 	if (data.password != undefined) {
@@ -40,10 +39,13 @@ exports.put = function(request, response) {
 		accountData.password = hashedPassword;
 	}
 	if (data.email != undefined) { accountData.email = data.email; }
-	var validZip = data.zip != undefined && data.zip.length == 5 && data.zip.match('/^[0-9]{5}$/');
+
+	var validZip = (data.zip != undefined) && (data.zip.length == 5)
+			&& (data.zip.match(/^[0-9]{5}$/) != null);
 	if (validZip) { accountData.zip = data.zip; }
 
-	conditions.userId = request.params.userId;
+	accountData.userId = request.params.userId;
+	var apiKey = data.apiKey;
 
-	account.updateAccount(accountData, response);
+	account.updateAccount(apiKey, accountData, response);
 }
