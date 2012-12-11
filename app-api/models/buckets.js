@@ -22,7 +22,6 @@ var BucketModel = mongoose.model('bucket', bucketSchema);
 exports.deleteBucket = function(bucketData, response) {
 	var deleteBucket = function() {
 		BucketModel.findByIdAndRemove(bucketData.bucketId, function(err, bucket) {
-			console.log('called' + bucket);
 			if(err) {
 				console.log(err);
 				response.send(constants.HTTP_BADREQUEST);

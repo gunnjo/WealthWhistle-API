@@ -16,10 +16,10 @@ var accountSchema = new Schema({
 	zip: {type: String, required: false}
 });
 
-var AccountModel = mongoose.model('account', accountSchema);
+exports.AccountModel = mongoose.model('account', accountSchema);
 
 exports.insertAccount = function(accountData, response) {
-	new AccountModel(accountData).save(function(err, newAccount) {
+	new this.AccountModel(accountData).save(function(err, newAccount) {
 		if (err) {
 			console.log(err);
 			response.send(constants.HTTP_CONFLICT);
@@ -33,7 +33,7 @@ exports.insertAccount = function(accountData, response) {
 
 exports.updateAccount = function(accountData, response) {
 
-	AccountModel.findByIdAndUpdate(accountData.userId, accountData, function(err, numberAffected, rawResponse) {
+	this.AccountModel.findByIdAndUpdate(accountData.userId, accountData, function(err, numberAffected, rawResponse) {
 		if (err) {
 			console.log(err);
 			response.send(constants.HTTP_BADREQUEST);
@@ -70,7 +70,6 @@ exports.verifyUser = function(action, apiKey, response, userId) {
 			response.send(constants.HTTP_UNAUTHORIZED);
 			return;
 		}
-		console.log('calling');
 		action();
 	});
 }
