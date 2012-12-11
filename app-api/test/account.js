@@ -105,6 +105,7 @@ describe('Accounts', function () {
 		});
 	});
 
+
 	describe('Update Accounts', function() {
 		var id = '';
 		var password = '';
@@ -126,7 +127,6 @@ describe('Accounts', function () {
 			new accounts.AccountModel(testData).save(function(err, newAccount) {
 				id = newAccount._id;
 				password = newAccount.password;
-				console.log(newAccount.apiKey);
 				done();
 			});
 		});
