@@ -12,6 +12,7 @@ var bucketSchema = new Schema({
 });
 
 var BucketModel = mongoose.model('bucket', bucketSchema);
+exports.BucketModel = BucketModel;
 
 /**
  * Deletes a bucket as well as the chain of events (credits and debits) that is attached
@@ -20,6 +21,7 @@ var BucketModel = mongoose.model('bucket', bucketSchema);
  * @param response - An express response object
  */
 exports.deleteBucket = function(apiKey, bucketData, response) {
+	//TODO: deleting a bucket should remove all relevant debits/credits
 	var deleteBucket = function() {
 		BucketModel.findByIdAndRemove(bucketData.bucketId, function(err, bucket) {
 			if(err) {
@@ -43,7 +45,6 @@ exports.deleteBucket = function(apiKey, bucketData, response) {
 exports.insertBucket = function(apiKey, bucketData, response) {
 	var insertBucket = function() {
 		new BucketModel(bucketData).save(function(err, newBucket) {
-			console.log("new bucket - " +  newBucket);
 			if (err) {
 				console,log(err);
 				response.send(constants.HTTP_BADREQUEST);
