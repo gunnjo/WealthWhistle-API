@@ -1,3 +1,3 @@
 test:
-    ./node_modules/.bin/mocha \
-.PHONY: test
+	./node_modules/.bin/mocha
+.PHONY:	test

@@ -15,7 +15,7 @@ First, set up the environment.
 
 5. Install the Mongoose module (npm install mongoose)
 
-6. Install the Bcrypt module (https://github.com/ncb000gt/node.bcrypt.js/)
+6. Install the Bcrypt module (npm install bcrypt)
 
 7. Install the Mocha module (npm install mocha)
 
@@ -30,6 +30,10 @@ Next, start the server.
 2. Start the application
     a. cd app-api
     b. node app.js
+
+Tests:
+
+Run 'make test' from the root directory of the project to run automated tests.
 
 Code Style:
 
