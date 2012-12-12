@@ -1,5 +1,23 @@
+/*Contains controllers that are related to buckets. Currently, only creation
+ * and deletion are defined. Temporary edits (e.g. an expense) should be handled
+ * through credits/debits, whereas permanent edits (e.g. renaming a bucket)
+ * should be added later.
+ *
+ * All controllers should take relevant fields out of the request object and
+ * pass the response object and an array of fields to be inserted into the database
+ * to the appropriate model.
+ * */
+
+//TODO: add ability to make permanent changes to a bucket.
+
 var buckets = require('../models/buckets.js');
 
+/**
+ * Handles a request to create a bucket.
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
 exports.post = function(request, response) {
 	var apiKey = '';
 	var data = request.body;
@@ -14,6 +32,12 @@ exports.post = function(request, response) {
 
 }
 
+/**
+ * Handles a request to delete a bucket.
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
 exports.delete = function(request, response) {
 	var apiKey = '';
 	var data = request.body;

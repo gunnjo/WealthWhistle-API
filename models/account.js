@@ -1,3 +1,9 @@
+/*Contains models for accounts. Currently, only insertion and modification are defined.
+ * Each new model should define an action to carry out the task on the schema (e.g.
+ * insert an account) and then verify the user through the verifyUser function, with
+ * the exception of account insertion, for obvious reasons.
+ */
+
 var constants = require('../constants.js');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -19,6 +25,11 @@ var accountSchema = new Schema({
 AccountModel = mongoose.model('account', accountSchema);
 exports.AccountModel = AccountModel;
 
+/**
+ * Creates an account.
+ * @param accountData - An array containing all fields to be added to the database.
+ * @param response - An express response object
+ */
 exports.insertAccount = function(accountData, response) {
 	new this.AccountModel(accountData).save(function(err, newAccount) {
 		if (err) {
@@ -31,6 +42,12 @@ exports.insertAccount = function(accountData, response) {
 	});
 };
 
+/**
+ * Modifies an account.
+ * @param apiKey - The api key to be used for authentication
+ * @param accountData - An array containing all fields to be modified on the database.
+ * @param response - An express response object
+ */
 exports.updateAccount = function(apiKey, accountData, response) {
 	var updateAccount = function() {
 		AccountModel.findByIdAndUpdate(accountData.userId, accountData,
@@ -53,7 +70,7 @@ exports.updateAccount = function(apiKey, accountData, response) {
 
 /**
  * Authenticates a user based on a provided API key. On successful authentication,
- * calls callback function.
+ * calls callback function 'action'.
  * @param action - A function to be called if the user is verified
  * @param apiKey - A string representing a user's API key.
  * @param response - An express response object

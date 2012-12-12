@@ -1,3 +1,7 @@
+/*Contains models for buckets. Currently, only insertion and deletion are defined.
+* Each new model should define an action to carry out the task on the schema (e.g.
+* insert a bucket) and then verify the user through account's verifyUser function
+* */
 var account = require('./account.js');
 var constants = require('../constants.js');
 var mongoose = require('mongoose');
@@ -17,7 +21,9 @@ exports.BucketModel = BucketModel;
 /**
  * Deletes a bucket as well as the chain of events (credits and debits) that is attached
  * to it.
- * @param bucketData - An array containing an apiKey as well as a bucket id to delete.
+ * @param apiKey - The api key to be used for authentication
+ * @param bucketData - An array containing an apiKey as well as a bucket id to delete
+ * as well as the bucket owner's user id.
  * @param response - An express response object
  */
 exports.deleteBucket = function(apiKey, bucketData, response) {
@@ -36,12 +42,12 @@ exports.deleteBucket = function(apiKey, bucketData, response) {
 }
 
 /**
- * Inserts a bucket into the data store.
- * @param bucketData - An array containing an apiKey, bucketName, projectedCapacity for
+ * Creates a bucket.
+ * @param apiKey - The api key to be used for authentication
+ * @param bucketData - An array containing a bucketName, projectedCapacity for
  * the bucket, and a userId that owns the bucket.
  * @param response - An express response object.
  */
-
 exports.insertBucket = function(apiKey, bucketData, response) {
 	var insertBucket = function() {
 		new BucketModel(bucketData).save(function(err, newBucket) {

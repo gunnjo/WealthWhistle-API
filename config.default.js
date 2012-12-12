@@ -8,6 +8,12 @@ var environment = EnvironmentEnum.DEV;
 var prod = {};
 var dev = {};
 
+prod.app = {};
+prod.mongo = {};
+
+dev.app = {};
+dev.mongo = {};
+
 prod.app.salt = '';
 prod.app.port = 3000;
 

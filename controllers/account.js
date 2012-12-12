@@ -1,10 +1,23 @@
+/*Contains controllers that are related to accounts. Currently, only creation
+* and edits are defined.
+*
+* All controllers should take relevant fields out of the request object and
+* pass the response object and an array of fields to be inserted into the database
+* to the appropriate model.
+*/
 var account = require('../models/account.js');
 var bcrypt = require('bcrypt');
 var config = require('../config.js');
 var crypto = require('crypto');
 
-//TODO: better input validation
+/**
+ * Handles a request to create  an account.
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
 exports.post = function(request, response) {
+	//TODO: better input validation
 	var accountData = {};
 	var data = request.body;
 
@@ -30,6 +43,12 @@ exports.post = function(request, response) {
 	account.insertAccount(accountData, response);
 }
 
+/**
+ * Handles a request to edit an account.
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
 exports.put = function(request, response) {
 	var accountData = {};
 	var data = request.body;
