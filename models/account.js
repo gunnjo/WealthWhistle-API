@@ -4,6 +4,8 @@
  * the exception of account insertion, for obvious reasons.
  */
 
+var bcrypt = require('bcrypt');
+var config = require('../config.js');
 var constants = require('../constants.js');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -26,7 +28,31 @@ AccountModel = mongoose.model('account', accountSchema);
 exports.AccountModel = AccountModel;
 
 /**
+ * Gets an account
+ *
+ * @param accountData - An array containing all fields to be added to the database.
+ * @param response - An express response object
+ */
+exports.getAccount = function(accountData, response) {
+	AccountModel.findOne({username: accountData.username}, function(error, account) {
+		if(error || account === null) {
+			console.log(error);
+			response.send(constants.HTTP_BADREQUEST);
+			return;
+		}
+		var correctPassword = bcrypt.compareSync(accountData.password, account.password);
+		if(correctPassword) {
+			response.send(constants.HTTP_OK, account);
+		}
+		else {
+			response.send(constants.HTTP_UNAUTHORIZED);
+		}
+	});
+};
+
+/**
  * Creates an account.
+ *
  * @param accountData - An array containing all fields to be added to the database.
  * @param response - An express response object
  */
@@ -44,6 +70,7 @@ exports.insertAccount = function(accountData, response) {
 
 /**
  * Modifies an account.
+ *
  * @param apiKey - The api key to be used for authentication
  * @param accountData - An array containing all fields to be modified on the database.
  * @param response - An express response object
@@ -71,6 +98,7 @@ exports.updateAccount = function(apiKey, accountData, response) {
 /**
  * Authenticates a user based on a provided API key. On successful authentication,
  * calls callback function 'action'.
+ *
  * @param action - A function to be called if the user is verified
  * @param apiKey - A string representing a user's API key.
  * @param response - An express response object

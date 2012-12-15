@@ -17,10 +17,11 @@ app.configure(function() {
 
 app.delete('/buckets/:bucketId', buckets.delete);
 
+app.get('/users/:username', accounts.get);
 app.get('/buckets/:userId', buckets.get);
 
-app.post('/users', accounts.post);
 app.post('/buckets', buckets.post);
+app.post('/users', accounts.post);
 
 app.put('/users/:userId', accounts.put);
 

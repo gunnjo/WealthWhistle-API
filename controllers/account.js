@@ -11,6 +11,23 @@ var config = require('../config.js');
 var crypto = require('crypto');
 
 /**
+ * Handles a request to get an account.
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
+
+exports.get = function(request, response) {
+	var accountData = {};
+	var data = request.body;
+
+	accountData.username = request.params.username;
+	accountData.password = data.password;
+
+	account.getAccount(accountData, response);
+}
+
+/**
  * Handles a request to create  an account.
  *
  * @param request - An express request object.

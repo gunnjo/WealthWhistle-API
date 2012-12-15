@@ -1,5 +1,6 @@
 var accounts = require('../models/account.js');
 var assert = require('assert');
+var bcrypt = require('bcrypt');
 var config = require('../config.js');
 var constants = require('../constants.js');
 var mocha = require('mocha');
@@ -226,6 +227,90 @@ describe('Accounts', function () {
 
 			request(putRequest, function (error, response, body) {
 				assert.equal(response.statusCode, constants.HTTP_BADREQUEST);
+				done();
+			});
+		});
+	});
+
+	describe('Get Accounts', function () {
+		var userId = '';
+		var hashedPassword = bcrypt.hashSync('test', config.app.salt);
+
+		before(function(done) {
+			var testAccount = {
+				activationKey: 'testAct',
+				apiKey : 'testKey',
+				birthDate: '12/12/12',
+				email:'test@test.com',
+				gender: 'M',
+				firstName:'I am a',
+				lastName:'test',
+				password: hashedPassword,
+				username:'test',
+				zip: '19301'
+			};
+
+			accounts.AccountModel(testAccount).save(function(error, newAccount) {
+				userId = newAccount._id;
+				done();
+			});
+		});
+
+		after(function(done) {
+			accounts.AccountModel.remove({}, function() {
+				done();
+			});
+		});
+
+		it('Should log in a user if username exists and password is correct', function(done) {
+			var accountData = {
+				password: 'test'
+			};
+
+			var requestData = {
+				json: accountData,
+				method: 'GET',
+				url: 'http://localhost:3000/users/test'
+			};
+
+			request.get(requestData, function(error, response, body) {
+				assert.equal(response.statusCode, '200');
+				assert.equal(body._id, userId);
+				done();
+			});
+		});
+
+		it('Should not log in a user that doesn\'t exist', function(done) {
+			var accountData = {
+				password: 'test'
+			};
+
+			var requestData = {
+				json: accountData,
+				method: 'GET',
+				url: 'http://localhost:3000/users/invalidUser'
+			};
+
+			request.get(requestData, function(error, response, body) {
+				assert.equal(response.statusCode, '400');
+				done();
+			});
+		});
+
+		it('Should not log in a user with an incorrect password', function(done) {
+
+			var accountData = {
+				password: 'invalidPassword'
+			};
+
+			var requestData = {
+				json: accountData,
+				method: 'GET',
+				url: 'http://localhost:3000/users/test'
+			};
+
+			request.get(requestData, function(error, response, body) {
+				assert.equal(response.statusCode, '401');
 				done();
 			});
 		});
