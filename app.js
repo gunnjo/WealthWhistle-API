@@ -15,7 +15,9 @@ app.configure(function() {
 	app.use(app.router);
 });
 
-app.delete('/buckets/:bucketId', buckets.delete)
+app.delete('/buckets/:bucketId', buckets.delete);
+
+app.get('/buckets/:userId', buckets.get);
 
 app.post('/users', accounts.post);
 app.post('/buckets', buckets.post);

@@ -42,6 +42,28 @@ exports.deleteBucket = function(apiKey, bucketData, response) {
 }
 
 /**
+ * Deletes a bucket as well as the chain of events (credits and debits) that is attached
+ * to it.
+ * @param apiKey - The api key to be used for authentication
+ * @param bucketData - An array containing a userId
+ * @param response - An express response object
+ */
+exports.getBuckets = function(apiKey, accountData, response) {
+	var getBuckets = function() {
+		BucketModel.find({userId : accountData.userId}, 'bucketId', function(err, buckets) {
+			if(err) {
+				console.log(err);
+				response.send(constants.HTTP_BADREQUEST);
+				return;
+			}
+			response.send(constants.HTTP_OK, buckets);
+		});
+	};
+
+	account.verifyUser(getBuckets, apiKey, response, accountData.userId);
+}
+
+/**
  * Creates a bucket.
  * @param apiKey - The api key to be used for authentication
  * @param bucketData - An array containing a bucketName, projectedCapacity for

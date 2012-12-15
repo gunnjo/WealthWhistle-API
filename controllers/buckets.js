@@ -13,6 +13,22 @@
 var buckets = require('../models/buckets.js');
 
 /**
+ * Handles a request to get all buckets for a userId
+ *
+ * @param request - An express request object.
+ * @param response - An express response object
+ */
+exports.get = function(request, response) {
+	var data = request.body;
+	var accountData = {};
+
+	apiKey = data.apiKey;
+	accountData.userId = request.params.userId;
+
+	buckets.getBuckets(apiKey, accountData, response);
+}
+
+/**
  * Handles a request to create a bucket.
  *
  * @param request - An express request object.
